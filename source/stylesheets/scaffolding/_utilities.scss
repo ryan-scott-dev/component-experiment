@@ -1,0 +1,61 @@
+// ==========================================================================
+//  Layout utilities
+// ==========================================================================
+
+%clearfix:before,
+%clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+%clearfix:after {
+    clear: both;
+}
+
+/*
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+
+%clearfix {
+    *zoom: 1;
+}
+
+// ==========================================================================
+//  Text utilities
+// ==========================================================================
+
+%crisp-text {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+// ==========================================================================
+//  Misc utilities
+// ==========================================================================
+
+%hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+%visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+%list-reset {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+%noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
