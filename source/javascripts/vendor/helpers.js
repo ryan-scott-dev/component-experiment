@@ -35,6 +35,10 @@ Function.method('handlers', function () {
   }
 });
 
+
+// Inspired by base2 and Prototype
+var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+
 Function.method('extend', function (prop) {
   var _super = this.prototype;
 
@@ -71,8 +75,8 @@ Function.method('extend', function (prop) {
   // The dummy class constructor
   function Class() {
       // All construction is actually done in the init method
-      if ( !initializing && this.init )
-          this.init.apply(this, arguments);
+      if ( !initializing && this.constructor )
+          this.constructor.apply(this, arguments);
   }
 
   // Populate our constructed prototype object
