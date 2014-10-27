@@ -24,7 +24,7 @@ Entitite.InstanceSystem.mixin({
   },
 
   aliveEntities: function() {
-    return this.entities.filter(function(e) { return e.alive; });
+    return this.entities.filter(function(e) { return e != null && e.alive; });
   },
 
   countOfAliveEntities: function() {
@@ -40,6 +40,11 @@ Entitite.InstanceSystem.mixin({
       name: this._name,
       entities: this.entities.serialize(this.serializeInstanceCore.bind(this))
     };
+  },
+
+  deserialize: function(state) {
+    state.entities = state.entities || [];
+    this.entities.deserialize(state.entities, this.initInstance.bind(this));
   },
 
   getInstance: function(index) {

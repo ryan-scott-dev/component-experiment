@@ -12,12 +12,14 @@ Entitite.SpriteSystem.mixin({
   _name: 'sprite',
 
   initInstance: function(instance, params) {
-    var spriteImage = params.sprite;
+    params = params || {};
+    var sprite = params.sprite || '';
     var x = params.x || 0;
     var y = params.y || 0;
     
-    instance.sprite = new Phaser.Sprite(this.game, x, y, spriteImage);  
+    instance.sprite = new Phaser.Sprite(this.game, x, y, sprite);
 
+    instance.sprite.spriteName = sprite;
     instance.sprite.rotation = params.rotation || 0;
     instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, 
                                                              instance.sprite.texture.height / 2);
@@ -32,6 +34,8 @@ Entitite.SpriteSystem.mixin({
 
   serializeInstance: function(instance) {
     return {
+      sprite: instance.sprite.spriteName,
+
       x: instance.sprite.x,
       y: instance.sprite.y,
 

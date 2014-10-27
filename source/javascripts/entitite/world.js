@@ -50,11 +50,18 @@ Entitite.World.mixin({
   },
 
   deserialize: function(state) {
+    state.systems = state.systems || {};
+    for (var systemName in state.systems) {
+      this.getSystem(systemName).deserialize(state.systems[systemName]);
+    }
+
+    state.entities = state.entities || {};
+    this.entities.deserialize(state.entities);
   },
 
   serialize: function() {
     return {
-      systems: this.systemsSerialized(),
+      systems:  this.systemsSerialized(),
       entities: this.entities.serialize()
     };
   },

@@ -39,6 +39,24 @@ Entitite.RecyclingCollection.mixin({
     this.freeIndexes.add(entityIndex);
   },
 
+  deserialize: function(state, valueCallback) {
+    state = state || {};
+    this.length = state.length || 100;
+    
+    this.freeIndexes = new Set(state.freeIndexes);
+    this.lastUsedIndex = state.lastUsedIndex || 0;
+    var values = state.values || [];
+    for (var i = 0; i < values.length; i++) {
+      var value = values[i];
+      
+      if (value !== null && value !== undefined) {
+        valueCallback(value, value);
+      }
+      
+      this[i] = value;
+    }
+  },
+
   serialize: function(entitySerialize) {
     return {
       length: this.length,
