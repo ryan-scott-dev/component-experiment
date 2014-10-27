@@ -18,7 +18,7 @@ Entitite.Game.prototype = {
       this.entititeWorld.acquireEntity({
         components: ['sprite'],
 
-        sprite: 'preloaderBar',
+        sprite: 'base_green',
 
         x: 100,
         y: 100,
@@ -27,7 +27,7 @@ Entitite.Game.prototype = {
       this.entititeWorld.acquireEntity({
         components: ['sprite'],
 
-        sprite: 'preloaderBar',
+        sprite: 'base_blue',
 
         x: 200,
         y: 200,
@@ -36,10 +36,19 @@ Entitite.Game.prototype = {
       this.entititeWorld.acquireEntity({
         components: ['sprite'],
 
-        sprite: 'preloaderBar',
+        sprite: 'base_red',
 
         x: 300,
         y: 300,
+      });
+
+      this.entititeWorld.acquireEntity({
+        components: ['sprite'],
+
+        sprite: 'base_yellow',
+
+        x: 400,
+        y: 400,
       });
 
       this.saveState();
