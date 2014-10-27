@@ -1,5 +1,5 @@
-Entitite.SpriteSystem = function(game, preallocatedInstanceCount) {
-  Entitite.InstanceSystem.call(this, preallocatedInstanceCount);
+Entitite.SpriteSystem = function(game, params) {
+  Entitite.InstanceSystem.call(this, params);
 
   this.game = game;
 };
@@ -19,7 +19,7 @@ Entitite.SpriteSystem.mixin({
     instance.sprite = new Phaser.Sprite(this.game, x, y, spriteImage);  
 
     instance.sprite.rotation = params.rotation || 0;
-    instance.sprite.pivot = params.pivot || new Phaser.Point();
+    instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, instance.sprite.texture.height / 2);
     instance.sprite.renderOrder = params.renderOrder || 0;
 
     this.game.world.add(instance.sprite);
@@ -27,6 +27,15 @@ Entitite.SpriteSystem.mixin({
 
   updateInstance: function(instance) {
     instance.sprite.rotation += 0.01;
+  },
+
+  serializeInstance: function(instance) {
+    return {
+      x: instance.sprite.x,
+      y: instance.sprite.y,
+
+      rotation: instance.sprite.rotation
+    };
   }
 
 });

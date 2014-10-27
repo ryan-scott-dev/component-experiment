@@ -11,8 +11,6 @@ Entitite.Game.prototype = {
     this.entititeWorld = new Entitite.World();
     this.entititeWorld.registerSystem(new Entitite.SpriteSystem(this));
 
-
-
     this.entititeWorld.acquireEntity({
       components: ['sprite'],
 

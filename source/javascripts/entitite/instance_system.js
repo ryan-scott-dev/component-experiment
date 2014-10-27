@@ -1,5 +1,5 @@
-Entitite.InstanceSystem = function(preallocatedInstanceCount) {
-  this.entities = new Entitite.RecyclingCollection(preallocatedInstanceCount);
+Entitite.InstanceSystem = function(params) {
+  this.entities = new Entitite.RecyclingCollection(params);
 };
 
 Entitite.InstanceSystem.mixin({
@@ -31,6 +31,10 @@ Entitite.InstanceSystem.mixin({
     this.aliveEntities().forEach(this.updateInstance.bind(this));
   },
 
+  serialize: function() {
+    return this.entities.serialize(this.serializeInstanceCore.bind(this));
+  },
+
   getInstance: function(index) {
     return this.entities[index];
   },
@@ -39,6 +43,22 @@ Entitite.InstanceSystem.mixin({
   },
 
   updateInstance: function(instance) {
+  },
+  
+  serializeInstanceCore: function(instance) {
+    var coreProperties = {
+      idx: instance.idx,
+      alive: instance.alive
+    };
+    var implementationProperties = this.serializeInstance(instance);
+    return $.extend({}, coreProperties, implementationProperties);
+  },
+
+  serializeInstance: function(instance) {
+    return {
+      idx: instance.idx,
+      alive: instance.alive
+    }
   }
 
 });
