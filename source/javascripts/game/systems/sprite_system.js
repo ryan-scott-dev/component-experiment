@@ -19,7 +19,8 @@ Entitite.SpriteSystem.mixin({
     instance.sprite = new Phaser.Sprite(this.game, x, y, spriteImage);  
 
     instance.sprite.rotation = params.rotation || 0;
-    instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, instance.sprite.texture.height / 2);
+    instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, 
+                                                             instance.sprite.texture.height / 2);
     instance.sprite.renderOrder = params.renderOrder || 0;
 
     this.game.world.add(instance.sprite);

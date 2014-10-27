@@ -49,6 +49,23 @@ Entitite.World.mixin({
     this.systems.set(system._name, system);
   },
 
+  deserialize: function(state) {
+  },
+
+  serialize: function() {
+    return {
+      systems: this.systemsSerialized(),
+      entities: this.entities.serialize()
+    };
+  },
+
+  systemsSerialized: function() {
+    var serialized = {};
+    this.systems.forEach(function(system, name) {
+      serialized[name] = system.serialize();
+    });
+    return serialized;
+  },
 
   update: function() {
     this.systems.forEach(function(system) {

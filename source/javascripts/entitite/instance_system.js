@@ -27,12 +27,19 @@ Entitite.InstanceSystem.mixin({
     return this.entities.filter(function(e) { return e.alive; });
   },
 
+  countOfAliveEntities: function() {
+    return this.aliveEntities().reduce(function(acc) { return acc + 1; }, 0);
+  },
+
   update: function() {
     this.aliveEntities().forEach(this.updateInstance.bind(this));
   },
 
   serialize: function() {
-    return this.entities.serialize(this.serializeInstanceCore.bind(this));
+    return {
+      name: this._name,
+      entities: this.entities.serialize(this.serializeInstanceCore.bind(this))
+    };
   },
 
   getInstance: function(index) {
@@ -58,7 +65,7 @@ Entitite.InstanceSystem.mixin({
     return {
       idx: instance.idx,
       alive: instance.alive
-    }
+    };
   }
 
 });
