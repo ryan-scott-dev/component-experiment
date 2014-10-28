@@ -1,10 +1,8 @@
 Entitite.SpriteSystem = function(game, params) {
-  Entitite.InstanceSystem.call(this, params);
-
-  this.game = game;
+  Entitite.GameSystem.call(this, game, params);
 };
 
-Entitite.SpriteSystem.prototype = Object.create(Entitite.InstanceSystem.prototype);
+Entitite.SpriteSystem.prototype = Object.create(Entitite.GameSystem.prototype);
 Entitite.SpriteSystem.prototype.constructor = Entitite.SpriteSystem;
 
 Entitite.SpriteSystem.mixin({

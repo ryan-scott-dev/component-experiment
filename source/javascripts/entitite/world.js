@@ -26,10 +26,11 @@ Entitite.World.mixin({
   acquireEntity: function(params) {
     var entityId = this.entities.acquireInstance(params);
     var entity = this.entities.getInstance(entityId);
-    entity.components = this.acquireComponents(params.components, params);
-    
     entity.ref = params.ref || this.rng.uuid();
 
+    params.entityRef = entity.ref;
+    entity.components = this.acquireComponents(params.components, params);
+    
     return entity;
   },
 
@@ -59,6 +60,12 @@ Entitite.World.mixin({
       this.getSystem(component).releaseInstance(index); 
     }
     return components;
+  },
+
+  findEntity: function(entityRef) {
+    return this.entities.entities.find(function(entity) {
+      return entity.ref = entityRef;
+    });
   },
 
   /* 😟 */

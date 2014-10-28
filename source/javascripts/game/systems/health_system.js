@@ -1,10 +1,8 @@
 Entitite.HealthSystem = function(game, params) {
-  Entitite.InstanceSystem.call(this, params);
-
-  this.game = game;
+  Entitite.GameSystem.call(this, game, params);
 };
 
-Entitite.HealthSystem.prototype = Object.create(Entitite.InstanceSystem.prototype);
+Entitite.HealthSystem.prototype = Object.create(Entitite.GameSystem.prototype);
 Entitite.HealthSystem.prototype.constructor = Entitite.HealthSystem;
 
 Entitite.HealthSystem.mixin({
@@ -17,7 +15,7 @@ Entitite.HealthSystem.mixin({
 
   updateInstance: function(instance) {
     if (instance.health <= 0) {
-      this.game.entititeWorld.deleteEntity('health', instance.idx);
+      this.deleteEntity(instance.entityRef);
     }
   },
 

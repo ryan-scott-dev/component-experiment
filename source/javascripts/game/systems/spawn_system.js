@@ -1,10 +1,8 @@
 Entitite.SpawnSystem = function(game, params) {
-  Entitite.InstanceSystem.call(this, params);
-
-  this.game = game;
+  Entitite.GameSystem.call(this, game, params);
 };
 
-Entitite.SpawnSystem.prototype = Object.create(Entitite.InstanceSystem.prototype);
+Entitite.SpawnSystem.prototype = Object.create(Entitite.GameSystem.prototype);
 Entitite.SpawnSystem.prototype.constructor = Entitite.SpawnSystem;
 
 Entitite.SpawnSystem.mixin({
@@ -30,7 +28,13 @@ Entitite.SpawnSystem.mixin({
       instance.spawnTimer = 0;
 
       var spawnTemplate = this.pluckSpawnTemplate(instance);
-      console.log('Attempted to spawn a "' + spawnTemplate + '" for team "' + instance.spawnTeam + '"');
+      var sprite = this.getSystemInstance('sprite', instance.entityRef);
+      var spawnPosition = sprite.sprite.position;
+      var spawnRotation = sprite.sprite.rotation;
+      
+      console.log('Attempted to spawn a "' + spawnTemplate + 
+        '" for team "' + instance.spawnTeam + 
+        '", at position "' + spawnPosition.toString() + '".' );
     }
   },
 
@@ -56,7 +60,7 @@ Entitite.SpawnSystem.mixin({
 
   serializeInstance: function(instance) {
     return {
-      spawnTimer:  instance.spawnTimer 
+      spawnTimer:  instance.spawnTimer,
       spawnOrder:  instance.spawnOrder
     };
   },
