@@ -42,10 +42,13 @@ Entitite.World.mixin({
 
   acquireComponents: function(components, params) {
     var acquiredComponents = {};
-    components.map(function(componentName) {
-      return this.getSystem(componentName);
-    }, this).forEach(function(component) {
-      acquiredComponents[component._name] = component.acquireInstance(params);
+    components.forEach(function(componentName) {
+      var component = this.getSystem(componentName);
+      if (component) {
+        acquiredComponents[componentName] = component.acquireInstance(params);
+      } else {
+        console.error('Unable to find registered system "' + componentName + '".')
+      }
     }, this);
     return acquiredComponents;
   },
