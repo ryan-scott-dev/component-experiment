@@ -10,13 +10,15 @@ Entitite.GameSystem.prototype.constructor = Entitite.GameSystem;
 
 Entitite.GameSystem.mixin({
   
-  deleteEntity: function(entityRef) {
-    var entity = this.world.findEntity(entityRef);
+  deleteEntityFromInstance: function(instance) {
+    var entityId = instance.parentId;
+    var entity = this.world.getEntity(entityId);
     this.world.releaseEntity(entity);
   },
 
-  getSystemInstance: function(system, entityRef) {
-    var entity = this.world.findEntity(entityRef);
+  getSystemInstanceFromInstance: function(system, instance) {
+    var entityId = instance.parentId;
+    var entity = this.world.getEntity(entityId);
     return this.world.getSystem(system).getInstance(entity.components[system]);
   }
 

@@ -28,7 +28,7 @@ Entitite.SpawnSystem.mixin({
       instance.spawnTimer = 0;
 
       var spawnTemplate = this.pluckSpawnTemplate(instance);
-      var sprite = this.getSystemInstance('sprite', instance.entityRef);
+      var sprite = this.getSystemInstanceFromInstance('sprite', instance);
       var spawnPosition = sprite.sprite.position;
       var spawnRotation = sprite.sprite.rotation;
       

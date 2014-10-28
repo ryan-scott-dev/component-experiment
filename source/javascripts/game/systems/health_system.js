@@ -15,7 +15,7 @@ Entitite.HealthSystem.mixin({
 
   updateInstance: function(instance) {
     if (instance.health <= 0) {
-      this.deleteEntity(instance.entityRef);
+      this.deleteEntityFromInstance(instance);
     }
   },
 

@@ -8,7 +8,7 @@ Entitite.InstanceSystem.mixin({
 
   acquireInstance: function(params) {
     var instance = this.entities.acquire(this.onInstanceAcquired.bind(this));
-    instance.entityRef = params.entityRef;
+    instance.parentId = params.parentId;
 
     var instanceId = instance.idx;
     this.initInstance(instance, params);
