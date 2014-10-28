@@ -16,44 +16,30 @@ Entitite.Game.prototype = {
 
     if (this.entititeWorld.entities.countOfAliveEntities() == 0) {
 
-      this.entititeWorld.acquireEntity({
-        components: ['sprite', 'health'],
-        team: 'green',
-        sprite: 'base_green',
-
-        x: 100,
-        y: 100,
-      });
-
-      this.entititeWorld.acquireEntity({
-        components: ['sprite', 'health'],
-        team: 'blue',
-        sprite: 'base_blue',
-
-        x: 1200,
-        y: 100,
-      });
-
-      this.entititeWorld.acquireEntity({
-        components: ['sprite', 'health'],
-        team: 'red',
-        sprite: 'base_red',
-
-        x: 100,
-        y: 400,
-      });
-
-      this.entititeWorld.acquireEntity({
-        components: ['sprite', 'health'],
-        team: 'yellow',
-        sprite: 'base_yellow',
-
-        x: 1200,
-        y: 400,
-      });
+      this.createBase({ team: 'green',  x: 100, y: 100 });
+      this.createBase({ team: 'blue',   x: 1200, y: 100 });
+      this.createBase({ team: 'red',    x: 100, y: 400 });
+      this.createBase({ team: 'yellow', x: 1200, y: 400 });
 
       this.saveState();
     }
+  },
+
+  createBase: function(params) {
+    this.createEntity({
+      components: ['sprite', 'health'],
+      team: params.team,
+      sprite: 'base_' + params.team,
+
+      health: 400,
+
+      x: params.x,
+      y: params.y,
+    });
+  },
+
+  createEntity: function(params) {
+    this.entititeWorld.acquireEntity(params);
   },
 
   update: function() {

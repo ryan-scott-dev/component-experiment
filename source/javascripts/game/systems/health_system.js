@@ -12,15 +12,11 @@ Entitite.HealthSystem.mixin({
   _name: 'health',
 
   initInstance: function(instance, params) {
-    instance.health = params.health || 10;
+    instance.health = params.health || 100;
   },
 
   updateInstance: function(instance) {
-    instance.health -= 0.1;
-
     if (instance.health <= 0) {
-      // Callback when entity is destroyed
-      // Trigger deletion of entity
       this.game.entititeWorld.deleteEntity('health', instance.idx);
     }
   },
