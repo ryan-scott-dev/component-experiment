@@ -11,14 +11,18 @@ Entitite.Game.prototype = {
     this.entititeWorld = new Entitite.World();
     this.entititeWorld.registerSystem(new Entitite.SpriteSystem(this));
     this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
+    this.entititeWorld.registerTemplate('base', {
+      components: ['sprite', 'health'],
+      health: 400,
+    });
 
     this.loadState();
 
     if (this.entititeWorld.entities.countOfAliveEntities() == 0) {
 
-      this.createBase({ team: 'green',  x: 100, y: 100 });
+      this.createBase({ team: 'green',  x: 100, y: 100  });
       this.createBase({ team: 'blue',   x: 1200, y: 100 });
-      this.createBase({ team: 'red',    x: 100, y: 400 });
+      this.createBase({ team: 'red',    x: 100, y: 400  });
       this.createBase({ team: 'yellow', x: 1200, y: 400 });
 
       this.saveState();
@@ -26,20 +30,17 @@ Entitite.Game.prototype = {
   },
 
   createBase: function(params) {
-    this.createEntity({
-      components: ['sprite', 'health'],
+    this.createTemplateEntity('base', {
       team: params.team,
       sprite: 'base_' + params.team,
-
-      health: 400,
 
       x: params.x,
       y: params.y,
     });
   },
 
-  createEntity: function(params) {
-    this.entititeWorld.acquireEntity(params);
+  createTemplateEntity: function(template, params) {
+    this.entititeWorld.acquireTemplateEntity(template, params);
   },
 
   update: function() {

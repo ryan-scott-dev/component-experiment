@@ -2,10 +2,26 @@ Entitite.World = function(preallocatedEntityCount) {
   this.entities = new Entitite.InstanceSystem(preallocatedEntityCount);
   this.systems = new Map();
 
+  this.templates = {};
   this.rng = new Phaser.RandomDataGenerator();
 };
 
 Entitite.World.mixin({
+
+  registerTemplate: function(templateName, params) {
+    this.templates[templateName] = params;
+  },
+
+  acquireTemplateEntity: function(templateName, params) {
+    var templateParams = this.templates[templateName];
+    
+    if (!templateParams) {
+      throw 'Unable to find template "' + templateName + '".';  
+    }
+
+    var combinedParams = $.extend({}, params, templateParams);
+    return this.acquireEntity(combinedParams);
+  },
 
   acquireEntity: function(params) {
     var entityId = this.entities.acquireInstance(params);
