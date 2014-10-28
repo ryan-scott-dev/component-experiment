@@ -1,5 +1,5 @@
-Entitite.CounterSystem = function(preallocatedInstanceCount) {
-  Entitite.InstanceSystem.call(this, preallocatedInstanceCount);
+Entitite.CounterSystem = function(game, params) {
+  Entitite.InstanceSystem.call(this, params);
 };
 
 Entitite.CounterSystem.prototype = Object.create(Entitite.InstanceSystem.prototype);

@@ -11,6 +11,7 @@ Entitite.Game.prototype = {
     this.entititeWorld = new Entitite.World();
     this.entititeWorld.registerSystem(new Entitite.SpriteSystem(this));
     this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.SpawnSystem(this));
 
     this.entititeWorld.registerTemplate('base', {
       components: ['sprite', 'health', 'spawn'],
@@ -22,7 +23,7 @@ Entitite.Game.prototype = {
         engineer: 10,
       },
 
-      spawnRate: 1
+      spawnRate: 10
     });
 
     this.entititeWorld.registerTemplate('fighter', {
