@@ -10,14 +10,15 @@ Entitite.Game.prototype = {
 
     this.entititeWorld = new Entitite.World();
     this.entititeWorld.registerSystem(new Entitite.SpriteSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
 
     this.loadState();
 
     if (this.entititeWorld.entities.countOfAliveEntities() == 0) {
 
       this.entititeWorld.acquireEntity({
-        components: ['sprite'],
-
+        components: ['sprite', 'health'],
+        team: 'green',
         sprite: 'base_green',
 
         x: 100,
@@ -25,29 +26,29 @@ Entitite.Game.prototype = {
       });
 
       this.entititeWorld.acquireEntity({
-        components: ['sprite'],
-
+        components: ['sprite', 'health'],
+        team: 'blue',
         sprite: 'base_blue',
 
-        x: 200,
-        y: 200,
+        x: 1200,
+        y: 100,
       });
 
       this.entititeWorld.acquireEntity({
-        components: ['sprite'],
-
+        components: ['sprite', 'health'],
+        team: 'red',
         sprite: 'base_red',
 
-        x: 300,
-        y: 300,
+        x: 100,
+        y: 400,
       });
 
       this.entititeWorld.acquireEntity({
-        components: ['sprite'],
-
+        components: ['sprite', 'health'],
+        team: 'yellow',
         sprite: 'base_yellow',
 
-        x: 400,
+        x: 1200,
         y: 400,
       });
 

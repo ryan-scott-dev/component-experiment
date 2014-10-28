@@ -41,6 +41,12 @@ Entitite.SpriteSystem.mixin({
 
       rotation: instance.sprite.rotation
     };
+  },
+
+  destroyInstance: function(instance) {
+    instance.sprite.destroy();
+
+    instance.sprite = null;
   }
 
 });

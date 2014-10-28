@@ -19,7 +19,10 @@ Entitite.InstanceSystem.mixin({
   },
 
   releaseInstance: function(index) {
-    this.entities[index].alive = false;
+    var entity = this.entities[index];
+    entity.alive = false;
+    this.destroyInstance(entity);
+
     this.entities.release(index);
   },
 
@@ -55,6 +58,9 @@ Entitite.InstanceSystem.mixin({
   },
 
   updateInstance: function(instance) {
+  },
+
+  destroyInstance: function(instance) {
   },
   
   serializeInstanceCore: function(instance) {

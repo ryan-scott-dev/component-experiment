@@ -17,10 +17,11 @@ Entitite.World.mixin({
     return entity;
   },
 
-  releaseEntity: function(entityId) {
-    var entity = this.entities.getInstance(entityId);
+  releaseEntity: function(entity) {
     this.releaseComponents(entity.components);
-    this.entities.releaseInstance(entityId);
+    this.entities.releaseInstance(entity.idx);
+    entity.components = null;
+    entity.ref = null;
   },
 
   acquireComponents: function(components, params) {
@@ -39,6 +40,15 @@ Entitite.World.mixin({
       this.getSystem(component).releaseInstance(index); 
     }
     return components;
+  },
+
+  /* 😟 */
+  deleteEntity: function(system, system_instance) {
+    var entity = this.entities.aliveEntities().find(function(entity) {
+      return entity.components && entity.components[system] == system_instance;
+    });
+    this.releaseEntity(entity);
+    return entity;
   },
 
   getSystem: function(name) {
