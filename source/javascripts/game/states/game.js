@@ -16,6 +16,11 @@ Entitite.Game.prototype = {
       health: 400,
     });
 
+    this.entititeWorld.registerTemplate('base', {
+      components: ['sprite', 'health'],
+      health: 400,
+    });
+
     this.loadState();
 
     if (this.entititeWorld.entities.countOfAliveEntities() == 0) {
@@ -23,7 +28,7 @@ Entitite.Game.prototype = {
       this.createBase({ team: 'green',  x: 100, y: 100  });
       this.createBase({ team: 'blue',   x: 1200, y: 100 });
       this.createBase({ team: 'red',    x: 100, y: 400  });
-      this.createBase({ team: 'yellow', x: 1200, y: 400 });
+      this.createBase({ team: 'orange', x: 1200, y: 400 });
 
       this.saveState();
     }
