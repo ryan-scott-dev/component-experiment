@@ -10,11 +10,14 @@ Entitite.Game.prototype = {
 
     this.entititeWorld = new Entitite.World();
     this.entititeWorld.registerSystem(new Entitite.SpriteSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.PhysicsSystem(this));
     this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
     this.entititeWorld.registerSystem(new Entitite.SpawnSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.RotateSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.FlySystem(this));
 
     this.entititeWorld.registerTemplate('base', {
-      components: ['sprite', 'health', 'spawn'],
+      components: ['sprite', 'health', 'spawn', 'rotate'],
       health: 400,
       
       spawnRatios: {
@@ -23,11 +26,11 @@ Entitite.Game.prototype = {
         engineer: 10,
       },
 
-      spawnRate: 1
+      spawnRate: 5
     });
 
     this.entititeWorld.registerTemplate('fighter', {
-      components: ['sprite', 'health', 'fly', 'target', 'attack'],
+      components: ['physics', 'sprite', 'health', 'fly', 'target', 'attack'],
       health: 50,
 
       speed: 5,
@@ -44,7 +47,7 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('bomber', {
-      components: ['sprite', 'health', 'fly', 'target', 'attack'],
+      components: ['physics', 'sprite', 'health', 'fly', 'target', 'attack'],
       health: 100,
 
       speed: 1,
@@ -61,7 +64,7 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('engineer', {
-      components: ['sprite', 'health', 'fly', 'target', 'attack'],
+      components: ['physics', 'sprite', 'health', 'fly', 'target', 'attack'],
       health: 80,
 
       speed: 3,

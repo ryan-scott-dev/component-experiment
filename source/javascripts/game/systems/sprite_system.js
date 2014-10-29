@@ -1,3 +1,5 @@
+//= require game/systems/game_system
+
 Entitite.SpriteSystem = function(game, params) {
   Entitite.GameSystem.call(this, game, params);
 };
@@ -21,6 +23,8 @@ Entitite.SpriteSystem.mixin({
     
     instance.sprite = new Phaser.Sprite(this.game, x, y, sprite);
 
+    this.game.physics.arcade.enable(instance.sprite);
+
     instance.sprite.spriteName = sprite;
     instance.sprite.rotation = params.rotation || 0;
     instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, 
@@ -31,7 +35,7 @@ Entitite.SpriteSystem.mixin({
   },
 
   updateInstance: function(instance) {
-    instance.sprite.rotation += 0.01;
+    // instance.sprite.rotation += 0.01;
   },
 
   serializeInstance: function(instance) {

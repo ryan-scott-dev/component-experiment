@@ -1,3 +1,5 @@
+//= require game/systems/game_system
+
 Entitite.SpawnSystem = function(game, params) {
   Entitite.GameSystem.call(this, game, params);
 };

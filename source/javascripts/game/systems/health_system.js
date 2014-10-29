@@ -1,3 +1,5 @@
+//= require game/systems/game_system
+
 Entitite.HealthSystem = function(game, params) {
   Entitite.GameSystem.call(this, game, params);
 };
