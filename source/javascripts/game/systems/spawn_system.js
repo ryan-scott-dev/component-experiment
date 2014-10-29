@@ -31,11 +31,24 @@ Entitite.SpawnSystem.mixin({
       var sprite = this.getSystemInstanceFromInstance('sprite', instance);
       var spawnPosition = sprite.sprite.position;
       var spawnRotation = sprite.sprite.rotation;
+      var spawnTeam = instance.spawnTeam;
+      var spawnParams = { 
+        position: spawnPosition, 
+        rotation: spawnRotation, 
+        team: spawnTeam,
+        sprite: spawnTemplate + '_' + spawnTeam 
+      };
       
-      console.log('Attempted to spawn a "' + spawnTemplate + 
-        '" for team "' + instance.spawnTeam + 
-        '", at position "' + spawnPosition.toString() + '".' );
+      this.spawnFromTemplate(spawnTemplate, spawnParams);
     }
+  },
+
+  spawnFromTemplate: function(spawnTemplate, spawnParams) {
+    this.world.acquireTemplateEntity(spawnTemplate, spawnParams);
+
+    console.log('Attempted to spawn a "' + spawnTemplate + 
+      '" for team "' + spawnParams.team + 
+      '", at position "' + spawnParams.position.toString() + '".' );
   },
 
   pluckSpawnTemplate: function(instance) {

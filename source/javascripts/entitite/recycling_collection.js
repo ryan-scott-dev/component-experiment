@@ -1,17 +1,15 @@
 Entitite.RecyclingCollection = function(params) {
   params = params || {};
-  this.length = params.length || 100;
-  
+  this.values = [];
+  this.values.length = params.length || 100;
+
   this.freeIndexes = new Set(params.freeIndexes);
   this.lastUsedIndex = params.lastUsedIndex || 0;
   var values = params.values || [];
   for (var i = 0; i < values.length; i++) {
-    this[i] = values[i];
+    this.values[i] = values[i];
   }
 };
-
-Entitite.RecyclingCollection.prototype = Object.create(Array.prototype);
-Entitite.RecyclingCollection.prototype.constructor = Entitite.RecyclingCollection;
 
 Entitite.RecyclingCollection.mixin({
   
@@ -19,10 +17,10 @@ Entitite.RecyclingCollection.mixin({
     defaultValue = defaultValue || {};
     var index = this.recycleIndex();
     if (index === undefined) {
-      index = this.lastUsedIndex++;  
+      index = this.lastUsedIndex++;
     }
   
-    var value = this[index] = this[index] || defaultValue;
+    var value = this.values[index] = this.values[index] || defaultValue;
     if (callback) {
       callback(value, index);
     }
@@ -39,10 +37,20 @@ Entitite.RecyclingCollection.mixin({
     this.freeIndexes.add(entityIndex);
   },
 
+  forEach: function(callback) {
+    for (var i = 0; i < this.values.length; i++) {
+      callback(this.values[i]);
+    };
+  },
+
+  getValue: function(index) {
+    return this.values[index];
+  },
+
   deserialize: function(state, valueCallback) {
     state = state || {};
-    this.length = state.length || 100;
-    
+    this.values.length = state.length || 100;
+
     this.freeIndexes = new Set(state.freeIndexes);
     this.lastUsedIndex = state.lastUsedIndex || 0;
     var values = state.values || [];
@@ -53,14 +61,14 @@ Entitite.RecyclingCollection.mixin({
         valueCallback(value, value);
       }
       
-      this[i] = value;
+      this.values[i] = value;
     }
   },
 
   serialize: function(entitySerialize) {
     return {
-      length: this.length,
-      values: this.map(entitySerialize),
+      length: this.values.length,
+      values: this.values.map(entitySerialize),
       lastUsedIndex: this.lastUsedIndex,
       freeIndexes: this.serializeFreeIndexes()
     };

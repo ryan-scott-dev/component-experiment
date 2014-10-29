@@ -18,12 +18,12 @@ Entitite.Game.prototype = {
       health: 400,
       
       spawnRatios: {
-        figher:   60,
+        fighter:   60,
         bomber:   30,
         engineer: 10,
       },
 
-      spawnRate: 10
+      spawnRate: 1
     });
 
     this.entititeWorld.registerTemplate('fighter', {
@@ -112,7 +112,9 @@ Entitite.Game.prototype = {
 
     this.loadState();
 
-    if (this.entititeWorld.entities.countOfAliveEntities() == 0) {
+
+    // If there was a state to load
+    if (true) {
 
       this.createBase({ team: 'green',  x: 100,  y: 100  });
       this.createBase({ team: 'blue',   x: 1200, y: 100 });

@@ -14,6 +14,10 @@ Entitite.SpriteSystem.mixin({
     var sprite = params.sprite || '';
     var x = params.x || 0;
     var y = params.y || 0;
+    if (params.position && params.x === undefined && params.y === undefined) {
+      x = params.position.x;
+      y = params.position.y;
+    }
     
     instance.sprite = new Phaser.Sprite(this.game, x, y, sprite);
 

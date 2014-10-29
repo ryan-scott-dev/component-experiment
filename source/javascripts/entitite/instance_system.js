@@ -21,23 +21,16 @@ Entitite.InstanceSystem.mixin({
   },
 
   releaseInstance: function(index) {
-    var entity = this.entities[index];
+    var entity = this.entities.getValue(index);
     entity.alive = false;
     this.destroyInstance(entity);
 
     this.entities.release(index);
   },
 
-  aliveEntities: function() {
-    return this.entities.filter(function(e) { return e != null && e.alive; });
-  },
-
-  countOfAliveEntities: function() {
-    return this.aliveEntities().reduce(function(acc) { return acc + 1; }, 0);
-  },
-
+  // RS: COULD be further optimised to only iterate up-to the last used index of the recycling collection
   update: function() {
-    this.aliveEntities().forEach(this.updateInstance.bind(this));
+    this.entities.forEach(this.baseUpdateInstance.bind(this));
   },
 
   serialize: function() {
@@ -53,10 +46,16 @@ Entitite.InstanceSystem.mixin({
   },
 
   getInstance: function(index) {
-    return this.entities[index];
+    return this.entities.getValue(index);
   },
 
   initInstance: function(instance, params) {
+  },
+
+  baseUpdateInstance: function(instance) {
+    if (instance && instance.alive) {
+      this.updateInstance(instance);
+    }
   },
 
   updateInstance: function(instance) {
