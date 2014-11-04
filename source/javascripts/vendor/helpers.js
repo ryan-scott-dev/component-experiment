@@ -90,3 +90,7 @@ Function.method('extend', function (prop) {
 
   return Class;
 });
+
+window.assert = function(condition, output) {
+  if (!condition) throw output;
+};

@@ -28,6 +28,8 @@ Entitite.World.mixin({
     var entity = this.entities.getInstance(entityId);
     entity.ref = params.ref || this.rng.uuid();
 
+    assert(entity.components == null, "Expected the acquired instance to not have any components.");
+
     params.parentId = entityId;
     entity.components = this.acquireComponents(params.components, params);
     

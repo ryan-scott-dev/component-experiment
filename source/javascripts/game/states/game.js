@@ -18,6 +18,7 @@ Entitite.Game.prototype = {
     this.entititeWorld.registerSystem(new Entitite.FlySystem(this));
     this.entititeWorld.registerSystem(new Entitite.TeamSystem(this));
     this.entititeWorld.registerSystem(new Entitite.AttackSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.LifespanSystem(this));
 
     this.entititeWorld.registerTemplate('base', {
       name: 'base',
@@ -98,8 +99,9 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('fighter_attack', {
-      components: ['sprite', 'projectile', 'damages'],
+      components: ['sprite', 'projectile', 'damages', 'lifespan'],
       sprite: 'fighter_attack',
+      lifespan: 3000,
       damageLookup: {
         base:     0.1,
         fighter:  1,
@@ -109,8 +111,9 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('bomber_attack', {
-      components: ['sprite', 'projectile', 'damages'],
+      components: ['sprite', 'projectile', 'damages', 'lifespan'],
       sprite: 'bomber_attack',
+      lifespan: 3000,
       damageLookup: {
         base:     3,
         fighter:  0.5,
@@ -120,8 +123,9 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('engineer_attack', {
-      components: ['sprite', 'projectile', 'disables'],
+      components: ['sprite', 'projectile', 'disables', 'lifespan'],
       sprite: 'engineer_attack',
+      lifespan: 3000,
       disableTimeLookup: {
         base:     5,
         fighter:  5,
