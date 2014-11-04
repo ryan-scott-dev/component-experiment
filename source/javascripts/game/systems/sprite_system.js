@@ -25,6 +25,8 @@ Entitite.SpriteSystem.mixin({
 
     this.game.physics.arcade.enable(instance.sprite);
 
+    instance.sprite.body.allowGravity = false;
+
     instance.sprite.spriteName = sprite;
     instance.sprite.rotation = params.rotation || 0;
     instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, 

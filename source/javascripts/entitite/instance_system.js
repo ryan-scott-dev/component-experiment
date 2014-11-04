@@ -9,6 +9,7 @@ Entitite.InstanceSystem.mixin({
   acquireInstance: function(params) {
     var instance = this.entities.acquire(this.onInstanceAcquired.bind(this));
     instance.parentId = params.parentId;
+    instance.name = params.name;
 
     var instanceId = instance.idx;
     this.initInstance(instance, params);
@@ -63,6 +64,10 @@ Entitite.InstanceSystem.mixin({
 
   destroyInstance: function(instance) {
   },
+
+  forEach: function(callback) {
+    return this.entities.forEach(callback);
+  },
   
   serializeInstanceCore: function(instance) {
     var coreProperties = {
@@ -76,7 +81,8 @@ Entitite.InstanceSystem.mixin({
   serializeInstance: function(instance) {
     return {
       idx: instance.idx,
-      alive: instance.alive
+      alive: instance.alive,
+      name: instance.name
     };
   }
 

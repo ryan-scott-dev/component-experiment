@@ -111,4 +111,8 @@ Entitite.World.mixin({
     });
   },
 
+  getSystemEntity: function(system, entity) {
+    return this.getSystem(system).getInstance(entity.components[system]);
+  }
+
 });

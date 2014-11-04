@@ -38,8 +38,12 @@ Entitite.RecyclingCollection.mixin({
   },
 
   forEach: function(callback) {
-    for (var i = 0; i < this.values.length; i++) {
-      callback(this.values[i]);
+    var value, i;
+    for (i = 0; i < this.lastUsedIndex && i < this.values.length; i++) {
+      value = this.values[i];
+      if (value) {
+        callback(value, i);  
+      }
     };
   },
 

@@ -19,7 +19,7 @@ Entitite.GameSystem.mixin({
   getSystemInstanceFromInstance: function(system, instance) {
     var entityId = instance.parentId;
     var entity = this.world.getEntity(entityId);
-    return this.world.getSystem(system).getInstance(entity.components[system]);
+    return this.world.getSystemEntity(system, entity);
   }
 
 });

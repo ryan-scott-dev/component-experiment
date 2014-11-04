@@ -14,10 +14,15 @@ Entitite.Game.prototype = {
     this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
     this.entititeWorld.registerSystem(new Entitite.SpawnSystem(this));
     this.entititeWorld.registerSystem(new Entitite.RotateSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.TargetSystem(this));
     this.entititeWorld.registerSystem(new Entitite.FlySystem(this));
+    this.entititeWorld.registerSystem(new Entitite.TeamSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.AttackSystem(this));
 
     this.entititeWorld.registerTemplate('base', {
-      components: ['sprite', 'health', 'spawn', 'rotate'],
+      name: 'base',
+      
+      components: ['sprite', 'team', 'health', 'spawn', 'rotate'],
       health: 400,
       
       spawnRatios: {
@@ -30,10 +35,13 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('fighter', {
-      components: ['physics', 'sprite', 'health', 'fly', 'target', 'attack'],
+      name: 'fighter',
+      
+      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack'],
       health: 50,
 
       speed: 5,
+      maxSpeed: 30,
       
       targetPreferences: {
         base:     10,
@@ -42,15 +50,19 @@ Entitite.Game.prototype = {
         engineer: 30
       },
 
-      attackRate: 1,
+      attackRate: 1000,
+      attackRange: 100,
       attackType: 'fighter_attack'
     });
 
     this.entititeWorld.registerTemplate('bomber', {
-      components: ['physics', 'sprite', 'health', 'fly', 'target', 'attack'],
+      name: 'bomber',
+      
+      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack'],
       health: 100,
 
       speed: 1,
+      maxSpeed: 20,
       
       targetPreferences: {
         base:     75,
@@ -59,15 +71,19 @@ Entitite.Game.prototype = {
         engineer: 5
       },
 
-      attackRate: 3,
+      attackRate: 3000,
+      attackRange: 200,
       attackType: 'bomber_attack'
     });
 
     this.entititeWorld.registerTemplate('engineer', {
-      components: ['physics', 'sprite', 'health', 'fly', 'target', 'attack'],
+      name: 'engineer',
+
+      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack'],
       health: 80,
 
       speed: 3,
+      maxSpeed: 40,
 
       targetPreferences: {
         base:     30,
@@ -76,7 +92,8 @@ Entitite.Game.prototype = {
         engineer: 10
       },
 
-      attackRate: 3,
+      attackRate: 3000,
+      attackRange: 200,
       attackType: 'engineer_attack'
     });
 
@@ -172,4 +189,48 @@ Entitite.Game.prototype = {
     this.entititeWorld.deserialize(state.world);
   },
 
+  findTargetForPreferences: function(sprite, preferences, sourceTeam) {
+    var teamSystem = this.entititeWorld.getSystem('team');
+    var spriteSystem = this.entititeWorld.getSystem('sprite');
+
+    var nearbyTargets = [];
+
+    // Find nearby entities not of the source team
+    teamSystem.forEach(function(teamInstance) { 
+      if (teamInstance.team !== sourceTeam) {
+        var entityId = teamInstance.parentId;
+        var entity = this.entititeWorld.getEntity(entityId);
+        var entitySprite = this.entititeWorld.getSystemEntity('sprite', entity);
+        var type = entity.name;
+
+        // Calculate distance
+        var distance = sprite.position.distance(entitySprite.sprite.position);
+        
+        // Store sprite id mapped to distance
+        nearbyTargets.push({ sprite: entitySprite.sprite, position: entitySprite.sprite.position, distance: distance, type: type });
+      }
+    }.bind(this));
+
+    // Sorted by preferences * distance
+    sortedTargets = nearbyTargets.sort(function(a, b) {
+      var diff = Math.abs(b.distance - a.distance);
+      if (diff < 400) {
+        if (preferences[a.type] < preferences[b.type]) return 1;
+        if (preferences[a.type] > preferences[b.type]) return -1;
+        return 0;
+      }
+      // If distance difference is between a range * preferences
+        // Sort by preferences
+      // Else
+        // Sort by distance
+      if (a.distance > b.distance) return 1;
+      if (a.distance < b.distance) return -1;
+      if (a.distance == b.distance) return 0;
+      return 10000;
+    });
+
+    // console.log(sortedTargets);
+    
+    return sortedTargets[0].sprite;
+  }
 };
