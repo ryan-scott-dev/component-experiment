@@ -20,6 +20,7 @@ Entitite.SpriteSystem.mixin({
       x = params.position.x;
       y = params.position.y;
     }
+    instance.isOutOfBounds = false;
     
     instance.sprite = new Phaser.Sprite(this.game, x, y, sprite);
     instance.sprite.componentId = params.parentId;
@@ -28,6 +29,11 @@ Entitite.SpriteSystem.mixin({
 
     instance.sprite.body.allowGravity = false;
     instance.sprite.body.immovable = params.immovable || false;
+    instance.sprite.checkWorldBounds = true;
+    
+    instance.sprite.events.onOutOfBounds.add(function() {
+      instance.isOutOfBounds = true;
+    });
 
     instance.sprite.spriteName = sprite;
     instance.sprite.rotation = params.rotation || 0;
@@ -39,6 +45,9 @@ Entitite.SpriteSystem.mixin({
   },
 
   updateInstance: function(instance) {
+    if (instance.isOutOfBounds) {
+      this.deleteEntityFromInstance(instance);
+    }
   },
 
   serializeInstance: function(instance) {

@@ -36,7 +36,7 @@ Entitite.TargetSystem.mixin({
       var attackMovementSpeed = 3;
       var targetVelocity = targetSprite.body.velocity.clone();
       var targetOffset = targetVelocity.multiply(attackMovementSpeed, attackMovementSpeed);
-      instance.targetPosition = Phaser.Point.add(targetSprite.position, targetOffset);
+      instance.targetPosition = targetSprite.position//Phaser.Point.add(targetSprite.position, targetOffset);
     } else {
       instance.targetPosition = null;
     }
