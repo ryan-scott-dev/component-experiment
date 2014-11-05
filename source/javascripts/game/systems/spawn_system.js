@@ -13,9 +13,9 @@ Entitite.SpawnSystem.mixin({
 
   initInstance: function(instance, params) {
     instance.spawnTimer  = params.spawnTimer || 0;
-    instance.spawnRate   = params.spawnRate || 0;
+    instance.spawnRate   = params.spawnRate;
     instance.spawnOrder  = params.spawnOrder || [];
-    instance.spawnRatios = params.spawnRatios || {};
+    instance.spawnRatios = params.spawnRatios;
     instance.spawnTeam   = params.team;
 
     if (instance.spawnOrder.length == 0) {

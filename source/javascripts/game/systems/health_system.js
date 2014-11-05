@@ -12,7 +12,7 @@ Entitite.HealthSystem.mixin({
   _name: 'health',
 
   initInstance: function(instance, params) {
-    instance.health = params.health || 100;
+    instance.health = params.health;
   },
 
   updateInstance: function(instance) {

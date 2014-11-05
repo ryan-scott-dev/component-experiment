@@ -12,8 +12,8 @@ Entitite.LifespanSystem.mixin({
   _name: 'lifespan',
 
   initInstance: function(instance, params) {
-    instance.lifespan = params.lifespan || 3000;
-    instance.timeAlive = params.timeAlive || 0;
+    instance.lifespan = params.lifespan;
+    instance.timeAlive = params.timeAlive;
   },
 
   updateInstance: function(instance) {

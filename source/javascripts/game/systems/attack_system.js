@@ -12,11 +12,11 @@ Entitite.AttackSystem.mixin({
   _name: 'attack',
 
   initInstance: function(instance, params) {
-    instance.attackType = instance.attackType || params.attackType;
-    instance.attackRate = instance.attackRate || params.attackRate;
-    instance.attackRange = instance.attackRange || params.attackRange;
-    instance.attackTimer = instance.attackTimer || 0;
-    instance.team = instance.team || params.team;
+    instance.attackType = params.attackType;
+    instance.attackRate = params.attackRate;
+    instance.attackRange = params.attackRange;
+    instance.attackTimer = params.attackTimer || 0;
+    instance.team = params.team;
   },
 
   updateInstance: function(instance) {

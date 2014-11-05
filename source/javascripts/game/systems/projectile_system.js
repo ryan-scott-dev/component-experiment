@@ -12,8 +12,8 @@ Entitite.ProjectileSystem.mixin({
   _name: 'projectile',
 
   initInstance: function(instance, params) {
-    instance.speed = params.speed || 1;
-    instance.maxSpeed = params.maxSpeed || 100;
+    instance.speed = params.speed;
+    instance.maxSpeed = params.maxSpeed;
   },
 
   updateInstance: function(instance) {

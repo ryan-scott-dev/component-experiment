@@ -10,7 +10,7 @@ Entitite.Game.prototype = {
 
     this.entititeWorld = new Entitite.World();
     this.entititeWorld.registerSystem(new Entitite.SpriteSystem(this));
-    this.entititeWorld.registerSystem(new Entitite.PhysicsSystem(this));
+
     this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
     this.entititeWorld.registerSystem(new Entitite.SpawnSystem(this));
     this.entititeWorld.registerSystem(new Entitite.RotateSystem(this));
@@ -53,8 +53,8 @@ Entitite.Game.prototype = {
         engineer: 30
       },
 
-      attackRate: 300,
-      attackRange: 100,
+      attackRate: 1000,
+      attackRange: 200,
       attackType: 'fighter_attack'
     });
 

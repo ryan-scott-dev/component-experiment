@@ -12,8 +12,8 @@ Entitite.TargetSystem.mixin({
   _name: 'target',
 
   initInstance: function(instance, params) {
-    instance.targetPreferences = instance.targetPreferences || params.targetPreferences;
-    instance.team = instance.team || params.team;
+    instance.targetPreferences = params.targetPreferences;
+    instance.team = params.team;
   },
 
   updateInstance: function(instance) {

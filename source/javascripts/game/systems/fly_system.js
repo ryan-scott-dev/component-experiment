@@ -2,15 +2,6 @@
 
 Entitite.FlySystem = function(game, params) {
   Entitite.GameSystem.call(this, game, params);
-
-  this.cohesionWeight = 40;
-  this.cohesionDistance = 100;
-
-  this.separationDistance = 100;
-
-  this.alignmentWeight = 8;
-
-  this.speed = 100;
 };
 
 Entitite.FlySystem.prototype = Object.create(Entitite.GameSystem.prototype);
@@ -21,7 +12,7 @@ Entitite.FlySystem.mixin({
   _name: 'fly',
 
   initInstance: function(instance, params) {
-    instance.speed = instance.speed || params.speed;
+    instance.speed = params.speed;
   },
 
   updateInstance: function(instance) {
