@@ -25,8 +25,10 @@ Entitite.Game.prototype = {
     this.entititeWorld.registerSystem(new Entitite.CollisionSystem(this));
 
     this.entititeWorld.registerSystem(new Entitite.DamageSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.DisableSystem(this));
 
     /* After collision / attack resolution */
+    this.entititeWorld.registerSystem(new Entitite.DisabilitySystem(this));
     this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
     this.entititeWorld.registerSystem(new Entitite.LifespanSystem(this));
 
@@ -34,7 +36,7 @@ Entitite.Game.prototype = {
       name: 'base',
       collisionType: 'target',
       
-      components: ['sprite', 'team', 'health', 'spawn', 'rotate', 'collision'],
+      components: ['sprite', 'team', 'health', 'spawn', 'rotate', 'collision', 'disability'],
       health: 400,
 
       immovable: true,
@@ -52,7 +54,7 @@ Entitite.Game.prototype = {
       name: 'fighter',
       collisionType: 'target',
       
-      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision'],
+      components: ['team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision', 'disability'],
       health: 50,
 
       speed: 5,
@@ -74,7 +76,7 @@ Entitite.Game.prototype = {
       name: 'bomber',
       collisionType: 'target',
       
-      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision'],
+      components: ['team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision', 'disability'],
       health: 100,
 
       speed: 1,
@@ -96,7 +98,7 @@ Entitite.Game.prototype = {
       name: 'engineer',
       collisionType: 'target',
 
-      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision'],
+      components: ['team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision', 'disability'],
       health: 80,
 
       speed: 3,
@@ -149,7 +151,7 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('engineer_attack', {
-      components: ['sprite', 'projectile', 'disables', 'collision', 'lifespan'],
+      components: ['sprite', 'projectile', 'disable', 'collision', 'lifespan'],
       collisionType: 'projectile',
 
       sprite: 'engineer_attack',

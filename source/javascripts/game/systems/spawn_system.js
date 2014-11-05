@@ -24,6 +24,9 @@ Entitite.SpawnSystem.mixin({
   },
 
   updateInstance: function(instance) {
+    var disabilityComponent = this.getSystemInstanceFromInstance('disability', instance);
+    if (disabilityComponent.disabled) return;
+    
     instance.spawnTimer += this.game.time.elapsed * 0.001;
 
     if (instance.spawnTimer > instance.spawnRate) {

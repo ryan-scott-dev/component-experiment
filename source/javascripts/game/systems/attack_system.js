@@ -20,6 +20,9 @@ Entitite.AttackSystem.mixin({
   },
 
   updateInstance: function(instance) {
+    var disabilityComponent = this.getSystemInstanceFromInstance('disability', instance);
+    if (disabilityComponent.disabled) return;
+
     instance.attackTimer += this.game.time.elapsed;
 
     if (instance.attackTimer > instance.attackRate) {

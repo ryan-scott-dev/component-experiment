@@ -19,6 +19,9 @@ Entitite.FlySystem.mixin({
     var spriteComponent = this.getSystemInstanceFromInstance('sprite', instance);
     var sprite = spriteComponent.sprite;
 
+    var disabilityComponent = this.getSystemInstanceFromInstance('disability', instance);
+    if (disabilityComponent.disabled) return;
+
     var targetComponent = this.getSystemInstanceFromInstance('target', instance);
     var target = targetComponent.targetPosition;
 
