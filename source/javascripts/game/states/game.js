@@ -20,6 +20,8 @@ Entitite.Game.prototype = {
     this.entititeWorld.registerSystem(new Entitite.AttackSystem(this));
     this.entititeWorld.registerSystem(new Entitite.LifespanSystem(this));
 
+    this.entititeWorld.registerSystem(new Entitite.ProjectileSystem(this));
+
     this.entititeWorld.registerTemplate('base', {
       name: 'base',
       
@@ -51,7 +53,7 @@ Entitite.Game.prototype = {
         engineer: 30
       },
 
-      attackRate: 1000,
+      attackRate: 300,
       attackRange: 100,
       attackType: 'fighter_attack'
     });
@@ -72,7 +74,7 @@ Entitite.Game.prototype = {
         engineer: 5
       },
 
-      attackRate: 3000,
+      attackRate: 2000,
       attackRange: 200,
       attackType: 'bomber_attack'
     });
@@ -93,7 +95,7 @@ Entitite.Game.prototype = {
         engineer: 10
       },
 
-      attackRate: 3000,
+      attackRate: 2000,
       attackRange: 200,
       attackType: 'engineer_attack'
     });
@@ -102,6 +104,9 @@ Entitite.Game.prototype = {
       components: ['sprite', 'projectile', 'damages', 'lifespan'],
       sprite: 'fighter_attack',
       lifespan: 3000,
+      speed: 100,
+      maxSpeed: 300,
+
       damageLookup: {
         base:     0.1,
         fighter:  1,
@@ -114,6 +119,9 @@ Entitite.Game.prototype = {
       components: ['sprite', 'projectile', 'damages', 'lifespan'],
       sprite: 'bomber_attack',
       lifespan: 3000,
+      speed: 50,
+      maxSpeed: 100,
+
       damageLookup: {
         base:     3,
         fighter:  0.5,
@@ -126,6 +134,9 @@ Entitite.Game.prototype = {
       components: ['sprite', 'projectile', 'disables', 'lifespan'],
       sprite: 'engineer_attack',
       lifespan: 3000,
+      speed: 50,
+      maxSpeed: 500,
+
       disableTimeLookup: {
         base:     5,
         fighter:  5,
