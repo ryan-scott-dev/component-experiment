@@ -9,24 +9,35 @@ Entitite.Game.prototype = {
     this.stage.backgroundColor = '#1A1A1A';
 
     this.entititeWorld = new Entitite.World();
+
+    /* Everything depends on this :( */
     this.entititeWorld.registerSystem(new Entitite.SpriteSystem(this));
 
-    this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
     this.entititeWorld.registerSystem(new Entitite.SpawnSystem(this));
     this.entititeWorld.registerSystem(new Entitite.RotateSystem(this));
     this.entititeWorld.registerSystem(new Entitite.TargetSystem(this));
     this.entititeWorld.registerSystem(new Entitite.FlySystem(this));
+    
     this.entititeWorld.registerSystem(new Entitite.TeamSystem(this));
     this.entititeWorld.registerSystem(new Entitite.AttackSystem(this));
-    this.entititeWorld.registerSystem(new Entitite.LifespanSystem(this));
-
+    
     this.entititeWorld.registerSystem(new Entitite.ProjectileSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.CollisionSystem(this));
+
+    this.entititeWorld.registerSystem(new Entitite.DamageSystem(this));
+
+    /* After collision / attack resolution */
+    this.entititeWorld.registerSystem(new Entitite.HealthSystem(this));
+    this.entititeWorld.registerSystem(new Entitite.LifespanSystem(this));
 
     this.entititeWorld.registerTemplate('base', {
       name: 'base',
+      collisionType: 'target',
       
-      components: ['sprite', 'team', 'health', 'spawn', 'rotate'],
+      components: ['sprite', 'team', 'health', 'spawn', 'rotate', 'collision'],
       health: 400,
+
+      immovable: true,
       
       spawnRatios: {
         fighter:   60,
@@ -39,8 +50,9 @@ Entitite.Game.prototype = {
 
     this.entititeWorld.registerTemplate('fighter', {
       name: 'fighter',
+      collisionType: 'target',
       
-      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack'],
+      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision'],
       health: 50,
 
       speed: 5,
@@ -60,8 +72,9 @@ Entitite.Game.prototype = {
 
     this.entititeWorld.registerTemplate('bomber', {
       name: 'bomber',
+      collisionType: 'target',
       
-      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack'],
+      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision'],
       health: 100,
 
       speed: 1,
@@ -81,8 +94,9 @@ Entitite.Game.prototype = {
 
     this.entititeWorld.registerTemplate('engineer', {
       name: 'engineer',
+      collisionType: 'target',
 
-      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack'],
+      components: ['physics', 'team', 'sprite', 'health', 'fly', 'target', 'attack', 'collision'],
       health: 80,
 
       speed: 3,
@@ -101,7 +115,9 @@ Entitite.Game.prototype = {
     });
 
     this.entititeWorld.registerTemplate('fighter_attack', {
-      components: ['sprite', 'projectile', 'damages', 'lifespan'],
+      components: ['sprite', 'projectile', 'damage', 'collision', 'lifespan'],
+      collisionType: 'projectile',
+
       sprite: 'fighter_attack',
       lifespan: 3000,
       speed: 100,
@@ -109,40 +125,44 @@ Entitite.Game.prototype = {
 
       damageLookup: {
         base:     0.1,
-        fighter:  1,
-        bomber:   1,
-        engineer: 1
+        fighter:  30,
+        bomber:   30,
+        engineer: 30
       },
     });
 
     this.entititeWorld.registerTemplate('bomber_attack', {
-      components: ['sprite', 'projectile', 'damages', 'lifespan'],
+      components: ['sprite', 'projectile', 'damage', 'collision', 'lifespan'],
+      collisionType: 'projectile',
+
       sprite: 'bomber_attack',
       lifespan: 3000,
       speed: 50,
       maxSpeed: 100,
 
       damageLookup: {
-        base:     3,
-        fighter:  0.5,
-        bomber:   0.5,
-        engineer: 0.5
+        base:     50,
+        fighter:  10,
+        bomber:   10,
+        engineer: 10
       }
     });
 
     this.entititeWorld.registerTemplate('engineer_attack', {
-      components: ['sprite', 'projectile', 'disables', 'lifespan'],
+      components: ['sprite', 'projectile', 'disables', 'collision', 'lifespan'],
+      collisionType: 'projectile',
+
       sprite: 'engineer_attack',
       lifespan: 3000,
       speed: 50,
       maxSpeed: 500,
 
       disableTimeLookup: {
-        base:     5,
-        fighter:  5,
-        bomber:   5,
-        engineer: 3
-      }
+        base:     4000,
+        fighter:  2000,
+        bomber:   2000,
+        engineer: 1000
+      },
     });
 
     this.loadState();
@@ -163,6 +183,7 @@ Entitite.Game.prototype = {
   createBase: function(params) {
     this.createTemplateEntity('base', {
       team: params.team,
+
       sprite: 'base_' + params.team,
 
       x: params.x,
@@ -212,7 +233,7 @@ Entitite.Game.prototype = {
 
     // Find nearby entities not of the source team
     teamSystem.forEach(function(teamInstance) { 
-      if (teamInstance.team !== sourceTeam) {
+      if (teamInstance.alive && teamInstance.team !== sourceTeam) {
         var entityId = teamInstance.parentId;
         var entity = this.entititeWorld.getEntity(entityId);
         var entitySprite = this.entititeWorld.getSystemEntity('sprite', entity);
@@ -234,18 +255,16 @@ Entitite.Game.prototype = {
         if (preferences[a.type] > preferences[b.type]) return -1;
         return 0;
       }
-      // If distance difference is between a range * preferences
-        // Sort by preferences
-      // Else
-        // Sort by distance
+
       if (a.distance > b.distance) return 1;
       if (a.distance < b.distance) return -1;
       if (a.distance == b.distance) return 0;
       return 10000;
     });
 
-    // console.log(sortedTargets);
-    
-    return sortedTargets[0].sprite;
+    if (sortedTargets.length > 0) 
+      return sortedTargets[0].sprite;
+
+    return null;
   }
 };

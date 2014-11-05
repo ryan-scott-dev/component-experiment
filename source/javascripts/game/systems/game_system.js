@@ -19,9 +19,19 @@ Entitite.GameSystem.mixin({
   getSystemInstanceFromInstance: function(system, instance) {
     var entityId = instance.parentId;
     var entity = this.world.getEntity(entityId);
-    var foundEntity = this.world.getSystemEntity(system, entity);
-    assert(!!foundEntity, "Expected the entity to be found for system '" + system + "'.")
-    return foundEntity;
+    var foundInstance = this.world.getSystemEntity(system, entity);
+    assert(!!foundInstance, "Expected the instance to be found for system '" + system + "'.")
+    return foundInstance;
+  },
+
+  getSystemInstanceFromEntity: function(system, entity) {
+    var foundInstance = this.world.getSystemEntity(system, entity);
+    assert(!!foundInstance, "Expected the instance to be found for system '" + system + "'.")
+    return foundInstance;
+  },
+
+  getEntityFromId: function(entityId) {
+    return this.world.getEntity(entityId);
   }
 
 });

@@ -22,10 +22,12 @@ Entitite.SpriteSystem.mixin({
     }
     
     instance.sprite = new Phaser.Sprite(this.game, x, y, sprite);
+    instance.sprite.componentId = params.parentId;
 
     this.game.physics.arcade.enable(instance.sprite);
 
     instance.sprite.body.allowGravity = false;
+    instance.sprite.body.immovable = params.immovable || false;
 
     instance.sprite.spriteName = sprite;
     instance.sprite.rotation = params.rotation || 0;
@@ -37,7 +39,6 @@ Entitite.SpriteSystem.mixin({
   },
 
   updateInstance: function(instance) {
-    // instance.sprite.rotation += 0.01;
   },
 
   serializeInstance: function(instance) {
