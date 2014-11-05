@@ -8,6 +8,10 @@ Entitite.Game.prototype = {
     this.stage.smoothed = false;
     this.stage.backgroundColor = '#1A1A1A';
 
+    this.game.world.setBounds(-1000, -1000, 4000, 4000);
+    this.game.camera.position.x = 0;
+    this.game.camera.position.y = 0;
+
     this.entititeWorld = new Entitite.World();
 
     /* Everything depends on this :( */
@@ -199,6 +203,23 @@ Entitite.Game.prototype = {
 
   update: function() {
     this.entititeWorld.update();
+
+    this.updateCamera();
+  },
+
+  updateCamera: function() { 
+    this.dragCameraTowardPointer(this.input.activePointer);
+  },
+
+  dragCameraTowardPointer: function(pointer) {
+    if (pointer.isDown) {
+        if (this.lastPointerPosition) {
+            this.game.camera.x += this.lastPointerPosition.x - pointer.position.x;
+            this.game.camera.y += this.lastPointerPosition.y - pointer.position.y;
+        }
+        this.lastPointerPosition = pointer.position.clone();
+    }
+    if (pointer.isUp) { this.lastPointerPosition = null; }
   },
 
   loadState: function() {

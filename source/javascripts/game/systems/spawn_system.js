@@ -26,7 +26,7 @@ Entitite.SpawnSystem.mixin({
   updateInstance: function(instance) {
     var disabilityComponent = this.getSystemInstanceFromInstance('disability', instance);
     if (disabilityComponent.disabled) return;
-    
+
     instance.spawnTimer += this.game.time.elapsed * 0.001;
 
     if (instance.spawnTimer > instance.spawnRate) {
@@ -50,10 +50,6 @@ Entitite.SpawnSystem.mixin({
 
   spawnFromTemplate: function(spawnTemplate, spawnParams) {
     this.world.acquireTemplateEntity(spawnTemplate, spawnParams);
-
-    console.log('Attempted to spawn a "' + spawnTemplate + 
-      '" for team "' + spawnParams.team + 
-      '", at position "' + spawnParams.position.toString() + '".' );
   },
 
   pluckSpawnTemplate: function(instance) {
