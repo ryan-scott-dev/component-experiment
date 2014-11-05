@@ -29,8 +29,11 @@ Entitite.RecyclingCollection.mixin({
   },
 
   recycleIndex: function() {
-    var iterator = this.freeIndexes.values().next();
-    return iterator.value;
+    var firstValue = this.freeIndexes.values().next();
+    var value = firstValue.value;
+
+    if (firstValue.done) return undefined;
+    return this.freeIndexes.delete(value) ? value : undefined;
   },
 
   release: function(entityIndex) {
