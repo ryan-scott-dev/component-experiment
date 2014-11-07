@@ -1,4 +1,11 @@
 
+# Load speed improvements
+
+- Texture Atlas
+- Prefetch assets
+- Clean up atlas json(remove rotated/trimmed/meta) + minify(strip whitespace)
+- Minify HTML
+
 # Sprite Export
 
 - JSON (Array)

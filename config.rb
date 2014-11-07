@@ -16,19 +16,19 @@ require 'uglifier'
 # Per-page layout changes:
 #
 # With no layout
-# page "/path/to/file.html", :layout => false
+# page '/path/to/file.html', :layout => false
 #
 # With alternative layout
-# page "/path/to/file.html", :layout => :otherlayout
+# page '/path/to/file.html', :layout => :otherlayout
 #
 # A path which all have the same layout
 # with_layout :admin do
-#   page "/admin/*"
+#   page '/admin/*'
 # end
 
 # Proxy pages (http://middlemanapp.com/basics/dynamic-pages/)
-# proxy "/this-page-has-no-template.html", "/template-file.html", :locals => {
-#  :which_fake_page => "Rendering a fake page with a local variable" }
+# proxy '/this-page-has-no-template.html', '/template-file.html', :locals => {
+#  :which_fake_page => 'Rendering a fake page with a local variable' }
 
 ###
 # Helpers
@@ -45,7 +45,7 @@ require 'uglifier'
 # Methods defined in the helpers block are available in templates
 # helpers do
 #   def some_helper
-#     "Helping"
+#     'Helping'
 #   end
 # end
 
@@ -54,6 +54,8 @@ set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 
 set :images_dir, 'images'
+
+set :relative_links, true
 
 configure :development do
   set :debug_assets, true
@@ -69,6 +71,8 @@ configure :build do
 
     ignore f.gsub('source/', '')
   end
+
+  ignore 'development_assets/*'
 
   # For example, change the Compass output style for deployment
   activate :minify_css
@@ -87,7 +91,52 @@ configure :build do
   activate :relative_assets
 
   # Or use a different image path
-  # set :http_prefix, "/Content/images/"
+  # set :http_prefix, '/Content/images/'
+end
+
+class AppCacheExtension < Middleman::Extension
+
+  option :cache, false, 'List of directories or files that will be cached'
+  option :cache_manifest, false, 'The name of the generated cache manifest'
+
+  def initialize app, options_hash = {}, &block
+    super
+    
+    cache_options = options.cache
+    cache_manifest_file = options.cache_manifest
+
+    app.after_build do |builder|
+      cache = []
+      
+      cache_options.each do |cache_file_pattern|
+        files_to_cache = Dir.glob('./build/' + cache_file_pattern)
+        files_to_cache.each do |file_to_cache|
+          cache << file_to_cache.gsub('./build/', '')
+        end
+      end
+
+      File.open("./build/#{cache_manifest_file}", "w") do |f|
+        f.write "CACHE MANIFEST\n\n"
+
+        f.write "CACHE:\n"
+        cache.each do |cache_file|
+          f.write "#{cache_file}\n"
+        end
+        f.write "\n"
+
+        f.write "NETWORK:\n"
+        f.write "*\n"
+        f.write "\n"
+      end
+    end
+  end
+
+end
+
+::Middleman::Extensions.register(:app_cache, AppCacheExtension)
+activate :app_cache do |f|
+  f.cache_manifest = 'index.appcache'
+  f.cache = %w(index.html stylesheets/*.css javascripts/*.js assets/*)
 end
 
 aws = {
@@ -104,6 +153,10 @@ activate :s3_sync do |s3_sync|
   s3_sync.aws_secret_access_key      = aws[:secret]
   s3_sync.prefix = 'component-experiment'
 end
+
+caching_policy 'text/html', max_age: 0, must_revalidate: true, public: true
+caching_policy 'text/css', max_age: (60 * 60 * 24 * 365), must_revalidate: false, proxy_revalidate: false, public: true
+caching_policy 'application/javascript', max_age: (60 * 60 * 24 * 365), must_revalidate: false, proxy_revalidate: false, public: true
 
 activate :cloudfront do |cf|
   cf.access_key_id = aws[:key]
