@@ -1,4 +1,9 @@
 
+# Sprite Export
+
+- JSON (Array)
+- Trim sprite names
+
 # Deploy
 - `middleman build`
 - `middleman s3_sync`

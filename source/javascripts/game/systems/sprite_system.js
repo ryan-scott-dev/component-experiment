@@ -2,6 +2,8 @@
 
 Entitite.SpriteSystem = function(game, params) {
   Entitite.GameSystem.call(this, game, params);
+
+  this.atlas = 'base-atlas';
 };
 
 Entitite.SpriteSystem.prototype = Object.create(Entitite.GameSystem.prototype);
@@ -13,7 +15,8 @@ Entitite.SpriteSystem.mixin({
 
   initInstance: function(instance, params) {
     params = params || {};
-    var sprite = params.sprite || '';
+    var frameName = params.sprite || '';
+
     var x = params.x || 0;
     var y = params.y || 0;
     if (params.position && params.x === undefined && params.y === undefined) {
@@ -22,7 +25,9 @@ Entitite.SpriteSystem.mixin({
     }
     instance.isOutOfBounds = false;
     
-    instance.sprite = new Phaser.Sprite(this.game, x, y, sprite);
+    var texture = this.atlas || frameName;
+    var frameName = !!this.atlas ? frameName : undefined;
+    instance.sprite = new Phaser.Sprite(this.game, x, y, texture, frameName);
     instance.sprite.componentId = params.parentId;
 
     this.game.physics.arcade.enable(instance.sprite);
@@ -36,10 +41,9 @@ Entitite.SpriteSystem.mixin({
     });
 
     instance.sprite.scale.x = instance.sprite.scale.y = params.scale || 1;
-    instance.sprite.spriteName = sprite;
     instance.sprite.rotation = params.rotation || 0;
-    instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, 
-                                                             instance.sprite.texture.height / 2);
+    instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.width / 2, 
+                                                             instance.sprite.height / 2);
     instance.sprite.renderOrder = params.renderOrder || 0;
 
     this.game.world.add(instance.sprite);
