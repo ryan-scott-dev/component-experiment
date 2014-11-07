@@ -212,48 +212,6 @@ Entitite.Game.prototype = {
         this.lastPointerPosition = pointer.position.clone();
     }
     if (pointer.isUp) { this.lastPointerPosition = null; }
-  },
-
-  findTargetForPreferences: function(sprite, preferences, sourceTeam) {
-    var teamSystem = this.entititeWorld.getSystem('team');
-    var spriteSystem = this.entititeWorld.getSystem('sprite');
-
-    var nearbyTargets = [];
-
-    // Find nearby entities not of the source team
-    teamSystem.forEach(function(teamInstance) { 
-      if (teamInstance.alive && teamInstance.team !== sourceTeam) {
-        var entityId = teamInstance.parentId;
-        var entity = this.entititeWorld.getEntity(entityId);
-        var entitySprite = this.entititeWorld.getSystemEntity('sprite', entity);
-        var type = entity.name;
-
-        // Calculate distance
-        var distance = sprite.position.distance(entitySprite.sprite.position);
-        
-        // Store sprite id mapped to distance
-        nearbyTargets.push({ sprite: entitySprite.sprite, position: entitySprite.sprite.position, distance: distance, type: type });
-      }
-    }.bind(this));
-
-    // Sorted by preferences * distance
-    sortedTargets = nearbyTargets.sort(function(a, b) {
-      var diff = Math.abs(b.distance - a.distance);
-      if (diff < 400) {
-        if (preferences[a.type] < preferences[b.type]) return 1;
-        if (preferences[a.type] > preferences[b.type]) return -1;
-        return 0;
-      }
-
-      if (a.distance > b.distance) return 1;
-      if (a.distance < b.distance) return -1;
-      if (a.distance == b.distance) return 0;
-      return 10000;
-    });
-
-    if (sortedTargets.length > 0) 
-      return sortedTargets[0].sprite;
-
-    return null;
   }
+
 };
