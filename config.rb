@@ -1,3 +1,5 @@
+require 'uglifier'
+
 ###
 # Compass
 ###
@@ -59,18 +61,45 @@ end
 
 # Build-specific configuration
 configure :build do
+
   # For example, change the Compass output style for deployment
-  # activate :minify_css
+  activate :minify_css
 
   # Minify Javascript on build
-  # activate :minify_javascript
+  activate :minify_javascript, compressor: Uglifier.new( output: { comments: :none } )
+
+  activate :minify_html, remove_comments: false
+
+  activate :gzip
 
   # Enable cache buster
-  # activate :asset_hash
+  activate :asset_hash
 
   # Use relative URLs
   # activate :relative_assets
 
   # Or use a different image path
   # set :http_prefix, "/Content/images/"
+end
+
+aws = {
+  bucket:'ryan-scott.me',
+
+  cloudfront: 'CLOUDFRONT DISTRIBUTION ID',
+  key: 'AWS KEY ID',
+  secret: 'AWS SECRET KEY',
+}
+
+activate :s3_sync do |s3_sync|
+  s3_sync.bucket                     = aws[:bucket]
+  s3_sync.aws_access_key_id          = aws[:key]
+  s3_sync.aws_secret_access_key      = aws[:secret]
+  s3_sync.prefix = '/component-experiment'
+end
+
+activate :cloudfront do |cf|
+  cf.access_key_id = aws[:key]
+  cf.secret_access_key = aws[:secret]
+  cf.distribution_id = aws[:cloudfront]
+  cf.filter = /\.html$/i  # default is /.*/
 end

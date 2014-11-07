@@ -6,3 +6,7 @@ gem 'middleman'
 gem 'middleman-livereload'
 
 gem 'sass-globbing'
+gem 'middleman-minify-html'
+
+gem 'middleman-s3_sync'
+gem 'middleman-cloudfront'
