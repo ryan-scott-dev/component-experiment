@@ -10,8 +10,8 @@ Entitite.Preloader = function (game) {
 Entitite.Preloader.prototype = {
 
   preload: function () {
-    this.preloadBar = this.add.sprite(0, 100, 'preloaderBar');
-
+    this.preloadBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'preloaderBar');
+    this.preloadBar.anchor.setTo(0.5, 0.5);
     this.load.setPreloadSprite(this.preloadBar);
 
     this.load.image('base_orange', '/assets/base_orange.png');
@@ -39,9 +39,14 @@ Entitite.Preloader.prototype = {
   },
 
   create: function () {
+    var tween = this.add.tween(this.preloadBar)
+      .to({
+        alpha: 0
+      }, 600, Phaser.Easing.Linear.None, true);
+    tween.onComplete.add(this.showGame, this);
+  },
 
-    this.preloadBar.cropEnabled = false;
-
+  showGame: function() {
     this.state.start('Game');
 
     $('body').addClass('loaded');
