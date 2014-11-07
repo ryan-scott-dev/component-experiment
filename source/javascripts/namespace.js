@@ -1,2 +1,3 @@
 Entitite = {
+  Config: {}
 };

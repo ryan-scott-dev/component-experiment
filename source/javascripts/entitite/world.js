@@ -8,8 +8,14 @@ Entitite.World = function(preallocatedEntityCount) {
 
 Entitite.World.mixin({
 
+  registerTemplates: function(templates) {
+    templates.forEach(function(template) {
+      this.registerTemplate(template.name, template);
+    }.bind(this));
+  },
+
   registerTemplate: function(templateName, params) {
-    this.templates[templateName] = params;
+    this.templates[templateName || params.name] = params;
   },
 
   acquireTemplateEntity: function(templateName, params) {
