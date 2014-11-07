@@ -171,19 +171,11 @@ Entitite.Game.prototype = {
       },
     });
 
-    this.loadState();
+    this.createBase({ team: 'green',  x: 0,  y: 100  });
+    this.createBase({ team: 'blue',   x: 300, y: 100 });
+    this.createBase({ team: 'red',    x: 0,  y: 400  });
+    this.createBase({ team: 'orange', x: 300, y: 400 });
 
-
-    // If there was a state to load
-    if (true) {
-
-      this.createBase({ team: 'green',  x: 0,  y: 100  });
-      this.createBase({ team: 'blue',   x: 300, y: 100 });
-      this.createBase({ team: 'red',    x: 0,  y: 400  });
-      this.createBase({ team: 'orange', x: 300, y: 400 });
-
-      // this.saveState();
-    }
   },
 
   createBase: function(params) {
@@ -220,32 +212,6 @@ Entitite.Game.prototype = {
         this.lastPointerPosition = pointer.position.clone();
     }
     if (pointer.isUp) { this.lastPointerPosition = null; }
-  },
-
-  loadState: function() {
-    console.time('loadState');
-    var state = JSON.parse(localStorage.getItem('game.state'));
-    this.fromGameState(state || {});
-    console.timeEnd('loadState');
-  },
-
-  saveState: function() {
-    console.time('saveState');
-    var state = this.gameState();
-    localStorage.setItem('game.state', JSON.stringify(state));
-    console.timeEnd('saveState');
-  },
-
-  gameState: function() {
-    return {
-      world: this.entititeWorld.serialize()
-    }
-  },
-
-  fromGameState: function(state) {
-    state.world = state.world || [];
-
-    this.entititeWorld.deserialize(state.world);
   },
 
   findTargetForPreferences: function(sprite, preferences, sourceTeam) {
