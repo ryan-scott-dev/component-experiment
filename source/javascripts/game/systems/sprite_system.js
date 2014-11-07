@@ -35,6 +35,7 @@ Entitite.SpriteSystem.mixin({
       instance.isOutOfBounds = true;
     });
 
+    instance.sprite.scale.x = instance.sprite.scale.y = params.scale || 1;
     instance.sprite.spriteName = sprite;
     instance.sprite.rotation = params.rotation || 0;
     instance.sprite.pivot = params.pivot || new Phaser.Point(instance.sprite.texture.width / 2, 

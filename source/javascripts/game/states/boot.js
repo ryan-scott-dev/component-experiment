@@ -10,23 +10,14 @@ Entitite.Boot.prototype = {
     create: function () {
 
         this.input.maxPointers = 1;
-        // this.stage.disableVisibilityChange = true;
 
         if (this.game.device.desktop) {
-            this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-            this.scale.minWidth = 256;
-            this.scale.minHeight = 196;
-            this.scale.maxWidth = 512;
-            this.scale.maxHeight = 384;
+            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
             this.scale.setScreenSize(true);
         } else {
-            this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-            this.scale.minWidth = 480;
-            this.scale.minHeight = 260;
-            this.scale.maxWidth = 1024;
-            this.scale.maxHeight = 768;
+            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
             this.scale.forceOrientation(false, true);

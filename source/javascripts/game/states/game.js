@@ -5,12 +5,11 @@ Entitite.Game.prototype = {
 
   create: function () {
 
-    this.stage.smoothed = false;
+    this.stage.smoothed = true;
     this.stage.backgroundColor = '#1A1A1A';
 
     this.game.world.setBounds(-1000, -1000, 4000, 4000);
-    this.game.camera.position.x = 0;
-    this.game.camera.position.y = 0;
+    this.game.camera.focusOnXY(150, 250);
 
     this.entititeWorld = new Entitite.World();
 
@@ -39,7 +38,7 @@ Entitite.Game.prototype = {
     this.entititeWorld.registerTemplate('base', {
       name: 'base',
       collisionType: 'target',
-      
+
       components: ['sprite', 'team', 'health', 'spawn', 'rotate', 'collision', 'disability'],
       health: 400,
 
@@ -51,7 +50,8 @@ Entitite.Game.prototype = {
         engineer: 10,
       },
 
-      spawnRate: 5
+      spawnRate: 5,
+      spawnTimer: 5
     });
 
     this.entititeWorld.registerTemplate('fighter', {
@@ -177,10 +177,10 @@ Entitite.Game.prototype = {
     // If there was a state to load
     if (true) {
 
-      this.createBase({ team: 'green',  x: 100,  y: 100  });
-      this.createBase({ team: 'blue',   x: 1200, y: 100 });
-      this.createBase({ team: 'red',    x: 100,  y: 400  });
-      this.createBase({ team: 'orange', x: 1200, y: 400 });
+      this.createBase({ team: 'green',  x: 0,  y: 100  });
+      this.createBase({ team: 'blue',   x: 300, y: 100 });
+      this.createBase({ team: 'red',    x: 0,  y: 400  });
+      this.createBase({ team: 'orange', x: 300, y: 400 });
 
       // this.saveState();
     }
