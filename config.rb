@@ -62,6 +62,14 @@ end
 # Build-specific configuration
 configure :build do
 
+  # Ignore everything except all.js and vendor.js
+  Dir['source/javascripts/**/*.js*'].each do |f|
+    next if File.basename(f) == 'all.js'
+    next if File.basename(f) == 'vendor.js'
+
+    ignore f.gsub('source/', '')
+  end
+
   # For example, change the Compass output style for deployment
   activate :minify_css
 
@@ -73,10 +81,10 @@ configure :build do
   activate :gzip
 
   # Enable cache buster
-  activate :asset_hash
+  activate :asset_hash, ignore: [/^assets\/.*/]
 
   # Use relative URLs
-  # activate :relative_assets
+  activate :relative_assets
 
   # Or use a different image path
   # set :http_prefix, "/Content/images/"
@@ -94,7 +102,7 @@ activate :s3_sync do |s3_sync|
   s3_sync.bucket                     = aws[:bucket]
   s3_sync.aws_access_key_id          = aws[:key]
   s3_sync.aws_secret_access_key      = aws[:secret]
-  s3_sync.prefix = '/component-experiment'
+  s3_sync.prefix = 'component-experiment'
 end
 
 activate :cloudfront do |cf|

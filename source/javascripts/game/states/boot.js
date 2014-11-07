@@ -4,7 +4,7 @@ Entitite.Boot = function (game) {
 Entitite.Boot.prototype = {
 
     preload: function () {
-        this.load.image('preloaderBar', '/assets/preload.png');
+        this.load.image('preloaderBar', 'assets/preload.png');
     },
 
     create: function () {
