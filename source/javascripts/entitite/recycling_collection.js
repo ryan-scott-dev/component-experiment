@@ -3,7 +3,7 @@ Entitite.RecyclingCollection = function(params) {
   this.values = [];
   this.values.length = params.length || 100;
 
-  this.freeIndexes = new Set(params.freeIndexes);
+  this.freeIndexes = params.freeIndexes || [];
   this.lastUsedIndex = params.lastUsedIndex || 0;
   var values = params.values || [];
   for (var i = 0; i < values.length; i++) {
@@ -29,15 +29,11 @@ Entitite.RecyclingCollection.mixin({
   },
 
   recycleIndex: function() {
-    var firstValue = this.freeIndexes.values().next();
-    var value = firstValue.value;
-
-    if (firstValue.done) return undefined;
-    return this.freeIndexes.delete(value) ? value : undefined;
+    return this.freeIndexes.pop();
   },
 
   release: function(entityIndex) {
-    this.freeIndexes.add(entityIndex);
+    this.freeIndexes.push(entityIndex);
   },
 
   forEach: function(callback) {
@@ -58,7 +54,7 @@ Entitite.RecyclingCollection.mixin({
     state = state || {};
     this.values.length = state.length || 100;
 
-    this.freeIndexes = new Set(state.freeIndexes);
+    this.freeIndexes = state.freeIndexes || [];
     this.lastUsedIndex = state.lastUsedIndex || 0;
     var values = state.values || [];
     for (var i = 0; i < values.length; i++) {
