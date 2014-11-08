@@ -1,7 +1,7 @@
 
 # Load speed improvements
 
-- Texture Atlas
+- Texture Atlas (Automateable w/ command line tools?)
 - Prefetch assets
 - Clean up atlas json(remove rotated/trimmed/meta) + minify(strip whitespace)
 - Minify HTML

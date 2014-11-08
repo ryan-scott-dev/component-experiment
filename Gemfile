@@ -10,3 +10,5 @@ gem 'middleman-minify-html'
 
 gem 'middleman-s3_sync'
 gem 'middleman-cloudfront'
+
+gem 'middleman-appcache'

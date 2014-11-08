@@ -94,49 +94,8 @@ configure :build do
   # set :http_prefix, '/Content/images/'
 end
 
-class AppCacheExtension < Middleman::Extension
-
-  option :cache, false, 'List of directories or files that will be cached'
-  option :cache_manifest, false, 'The name of the generated cache manifest'
-
-  def initialize app, options_hash = {}, &block
-    super
-    
-    cache_options = options.cache
-    cache_manifest_file = options.cache_manifest
-
-    app.after_build do |builder|
-      cache = []
-      
-      cache_options.each do |cache_file_pattern|
-        files_to_cache = Dir.glob('./build/' + cache_file_pattern)
-        files_to_cache.each do |file_to_cache|
-          cache << file_to_cache.gsub('./build/', '')
-        end
-      end
-
-      File.open("./build/#{cache_manifest_file}", "w") do |f|
-        f.write "CACHE MANIFEST\n\n"
-
-        f.write "CACHE:\n"
-        cache.each do |cache_file|
-          f.write "#{cache_file}\n"
-        end
-        f.write "\n"
-
-        f.write "NETWORK:\n"
-        f.write "*\n"
-        f.write "\n"
-      end
-    end
-  end
-
-end
-
-::Middleman::Extensions.register(:app_cache, AppCacheExtension)
-activate :app_cache do |f|
-  f.cache_manifest = 'index.appcache'
-  f.cache = %w(index.html stylesheets/*.css javascripts/*.js assets/*)
+activate :app_cache do |config|
+  config.cache = %w(index.html stylesheets/*.css javascripts/*.js assets/*)
 end
 
 aws = {
