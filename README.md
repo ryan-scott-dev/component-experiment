@@ -35,3 +35,7 @@ Using the framework [Phaser.io](http://phaser.io) is quite restricted in writing
 https://github.com/qiao/ces.js
 
 http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
+
+## License
+
+Component Experiment was created by [Ryan Scott](http://github.com/archytaus) is distributed under the [MIT](http://ryanscott.mit-license.org) license.
